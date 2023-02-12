@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()               //for turning off multi web request
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/error").permitAll()
+                .antMatchers("/auth/login", "/error","/auth/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
