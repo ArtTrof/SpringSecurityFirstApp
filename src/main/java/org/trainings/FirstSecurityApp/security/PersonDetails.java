@@ -2,10 +2,12 @@ package org.trainings.FirstSecurityApp.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.trainings.FirstSecurityApp.models.Person;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class PersonDetails implements UserDetails {
     private final Person person;
@@ -16,7 +18,8 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        //List<GrantedAuthority> = new SimpleGrantedAuthority(//show_money...)//if we d user authority list
+        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));//with ROLE_*
     }
 
     @Override

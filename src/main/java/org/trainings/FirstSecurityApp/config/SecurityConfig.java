@@ -26,8 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http     //csrf().disable()               //for turning off multi web request
                 .authorizeRequests()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/auth/login", "/error","/auth/registration").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().hasAnyRole("USER","ADMIN")
+//                .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
