@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.trainings.FirstSecurityApp.services.PersonDetailsService;
@@ -23,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //here config spring security && authorization conf
 
-        http.csrf().disable()               //for turning off multi web request
+        http     //csrf().disable()               //for turning off multi web request
                 .authorizeRequests()
                 .antMatchers("/auth/login", "/error","/auth/registration").permitAll()
                 .anyRequest().authenticated()
@@ -39,11 +40,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //auth config
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personDetailsService);
+        auth.userDetailsService(personDetailsService)
+                .passwordEncoder(getPasswordEncoder());
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }

@@ -18,6 +18,7 @@ import javax.validation.Valid;
 public class AuthController {
     private final PersonValidator personValidator;
     private final RegistrationService registrationService;
+
     @Autowired
     public AuthController(PersonValidator personValidator, RegistrationService registrationService) {
         this.personValidator = personValidator;
@@ -28,14 +29,16 @@ public class AuthController {
     public String loginPage() {
         return "auth/login";
     }
+
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("person") Person person) {
         return "auth/registration";
     }
+
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("person")@Valid Person person,
-                                      BindingResult bindingResult){
-        personValidator.validate(person,bindingResult);
+    public String performRegistration(@ModelAttribute("person") @Valid Person person,
+                                      BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors())
             return "auth/registration";
         registrationService.register(person);
